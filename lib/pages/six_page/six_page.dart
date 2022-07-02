@@ -45,6 +45,7 @@ class _SixPageState extends State<SixPage> {
               unselectedIconTheme: const IconThemeData(color: Colors.white),
               backgroundColor: const Color(0xFF2d2e36),
               indicatorColor: Colors.grey,
+              labelType: NavigationRailLabelType.selected,
               destinations: const [
                 NavigationRailDestination(
                     icon: Icon(Icons.home), label: Text('home')),
