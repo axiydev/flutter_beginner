@@ -40,6 +40,7 @@ class _ThirdPageState extends State<ThirdPage>
           delegate: CustomFlowDelegate(myAnimation: _animation!),
           children: myList
               .map((e) => FloatingActionButton(
+                    heroTag: '$e',
                     onPressed: () {
                       _animationController!.status == AnimationStatus.completed
                           ? _animationController!.reverse()

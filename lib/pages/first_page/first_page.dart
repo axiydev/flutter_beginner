@@ -1,6 +1,11 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beginner/consts/const_images.dart';
+import 'package:flutter_beginner/pages/five_page/five_page.dart';
+import 'package:flutter_beginner/pages/fourth_page/fourth_page.dart';
 import 'package:flutter_beginner/pages/second_page/second_page.dart';
+import 'package:flutter_beginner/pages/six_page/six_page.dart';
 import 'package:flutter_beginner/pages/third_page/third_page.dart';
 
 class FirstPage extends StatefulWidget {
@@ -12,46 +17,103 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+  int? _currentIndex = 0;
+  late final List<Widget?> _list = [
+    home(),
+    const SecondPage(),
+    const ThirdPage(),
+    const FourthPage(),
+  ];
+
+  Widget home() {
+    return SafeArea(
+      child: SizedBox(
+        width: double.infinity,
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          //gradientli image
+          InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, SixPage.path);
+              },
+              child: _myContainer()),
+          _customButton(onPressed: () {
+            print("pressed");
+            Navigator.pushNamed(context, ThirdPage.path);
+          }),
+          _customOutlinedButton(onPressed: () {
+            print('button pressed');
+          }),
+          SizedBox(
+            height: 60,
+            width: 200,
+            child: TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    textStyle: const TextStyle(
+                      fontSize: 23,
+                    )),
+                onPressed: () {},
+                child: const Text("hello world")),
+          ),
+
+          GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, SecondPage.path);
+              },
+              child: const Text("gesture detector")),
+        ]),
+      ),
+    );
+  }
+
+  void goToPage({required int? index}) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, FirstPage.path);
+        break;
+      case 1:
+        Navigator.pushNamed(context, SecondPage.path);
+        break;
+      case 2:
+        Navigator.pushNamed(context, ThirdPage.path);
+        break;
+      case 3:
+        Navigator.pushNamed(context, FourthPage.path);
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                //gradientli image
-                _myContainer(),
-                _customButton(onPressed: () {
-                  print("pressed");
-                  Navigator.pushNamed(context, ThirdPage.path);
-                }),
-                _customOutlinedButton(onPressed: () {
-                  print('button pressed');
-                }),
-                SizedBox(
-                  height: 60,
-                  width: 200,
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          primary: Colors.white,
-                          textStyle: const TextStyle(
-                            fontSize: 23,
-                          )),
-                      onPressed: () {},
-                      child: const Text("hello world")),
-                ),
-
-                GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, SecondPage.path);
-                    },
-                    child: const Text("gesture detector")),
-              ]),
-        ),
+        child: _list[_currentIndex!]!,
       ),
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+          backgroundColor: Colors.black,
+          icons: const [
+            CupertinoIcons.home,
+            CupertinoIcons.alarm,
+            CupertinoIcons.slash_circle,
+            CupertinoIcons.slash_circle,
+          ],
+          activeColor: Colors.blue,
+          inactiveColor: Colors.grey,
+          activeIndex: _currentIndex!,
+          gapLocation: GapLocation.center,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+            // goToPage(index: index);
+          }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, FivePage.path);
+          },
+          child: const Icon(Icons.add)),
     );
   }
 
